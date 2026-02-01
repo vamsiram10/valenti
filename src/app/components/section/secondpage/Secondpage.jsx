@@ -36,8 +36,8 @@ const SecondPage = () => {
   return (
     <div
       style={{
-        color: "black",
-        backgroundColor: "black",
+        color: "pink",
+        backgroundColor: "white",
         width: "100vw",
         height: "100vh",
         boxSizing: "border-box",
@@ -45,30 +45,67 @@ const SecondPage = () => {
         overflow: "hidden",
       }}
     >
+      {/* Place the text on the right-center */}
       <div
         style={{
+          position: "absolute",
+          right: "7%",
+          top: "50%",
+          transform: "translateY(-50%)",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
+          alignItems: "flex-end",
           justifyContent: "center",
-          height: "100vh",
-          background: "linear-gradient(135deg, #000 70%, #fd397a 130%)",
+          minHeight: "220px",
+          zIndex: 5,
         }}
       >
         <div
           style={{
             color: "pink",
-            fontSize: "2.3rem",
+            fontSize: "3rem",
             fontWeight: "bold",
-            marginBottom: 38,
-            textShadow: "0px 2px 16px rgba(253,57,122,0.18)",
+            marginBottom: yesClicked ? 38 : 38,
             letterSpacing: 1,
+            textAlign: "right",
+            lineHeight: 1.13,
+            textShadow: "0px 2px 16px rgba(253,57,122,0.10)",
+            minWidth: 0,
+            whiteSpace: "pre-line",
           }}
         >
-          {yesClicked ? "YAY! 💖" : "Will you be my Valentine?"}
+          {yesClicked ? (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-end",
+              }}
+            >
+              <span>YAY! 💖 hehe🤭</span>
+            </div>
+          ) : (
+            <>
+              <span>Will </span>
+              <br />
+              <span>you </span>
+              <br />
+              <span>be my</span>
+              <br />
+              <span>Valentine?</span>
+            </>
+          )}
         </div>
         {!yesClicked && (
-          <div style={{ position: "relative", height: 80, width: 420 }}>
+          <div
+            style={{
+              position: "relative",
+              height: 80,
+              width: 220,
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
             <button
               onClick={handleYesClick}
               style={{
@@ -80,7 +117,7 @@ const SecondPage = () => {
                 color: "#fff",
                 fontWeight: 700,
                 cursor: "pointer",
-                marginRight: 48,
+                marginRight: 0,
                 boxShadow: "0 3px 18px 0 rgba(253,57,122,0.23)",
                 transition: "transform 0.1s",
               }}
@@ -119,15 +156,15 @@ const SecondPage = () => {
         </button>
       )}
       <img
-        src="/cat1.jpg"
+        src="/giving.jpeg"
         alt="Cat on bottom left"
         style={{
           position: "absolute",
           left: 60,
           bottom: 0,
-          width: "400px",
+          width: "40rem",
           height: "auto",
-          zIndex: 9,
+          zIndex: 0,
           pointerEvents: "none",
         }}
       />
