@@ -5,13 +5,13 @@ const SecondPage = () => {
     <div
       style={{
         color: "black",
-        backgroundColor: "lightblue",
+        backgroundColor: "black",
         width: "100vw",
         height: "100vh",
         boxSizing: "border-box",
       }}
     >
-      This is the first page content.
+      hero
     </div>
   );
 };
