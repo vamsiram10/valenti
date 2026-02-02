@@ -271,7 +271,7 @@ const ThirdPage = () => {
             </span>
             <img
               ref={vampRef}
-              src="vamp.png"
+              src="/vamp.png"
               alt="Vamp"
               style={{
                 transform: "rotate(-10deg)",
@@ -323,7 +323,7 @@ const ThirdPage = () => {
                 onClick={() => setShowPopup(false)}
               >
                 <img
-                  src="kiss2.jpg"
+                  src="/kiss2.jpg"
                   alt="Popup"
                   style={{
                     maxWidth: "90vw",
@@ -341,7 +341,7 @@ const ThirdPage = () => {
         </>
         {/* Fixed image at bottom right corner */}
         <img
-          src="vampicshow.jpg"
+          src="/vampicshow.jpg"
           alt="Vampic Show"
           style={{
             position: "absolute",
