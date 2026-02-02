@@ -271,7 +271,7 @@ const ThirdPage = () => {
             </span>
             <img
               ref={vampRef}
-              src="/vamp.png"
+              src="vamp.png"
               alt="Vamp"
               style={{
                 transform: "rotate(-10deg)",
