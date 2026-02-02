@@ -57,16 +57,13 @@ const FlyingHearts = ({ vampRef }) => {
       const baseX = rect.left + rect.width / 2;
       const baseY = rect.top + rect.height / 2;
 
-      // NEW: Reduce offset and range to bring hearts closer to vamp.png
-      // Old: const offset = 32 + Math.random() * 28; // px offset outside the image
-      // We'll use a smaller offset for closer effect
-      const offset = 10 + Math.random() * 18; // px offset outside the image (closer)
+      const offset = 10 + Math.random() * 18;
 
       const edge = Math.floor(Math.random() * 4);
       let x, y;
       if (edge === 0) {
         // top
-        x = rect.left + rect.width * (0.25 + Math.random() * 0.5); // spawn within 25% - 75% width
+        x = rect.left + rect.width * (0.25 + Math.random() * 0.5);
         y = rect.top - offset;
       } else if (edge === 1) {
         // right
@@ -82,10 +79,8 @@ const FlyingHearts = ({ vampRef }) => {
         y = rect.top + rect.height * (0.25 + Math.random() * 0.5);
       }
 
-      // Bring hearts' fly animation start and end closer to the vamp
-      // Reduce random factors a bit for tighter animation
       const dx = (x - baseX) * 0.3 + (Math.random() - 0.5) * 16;
-      const dy = (y - baseY) * 0.25 - 48 - Math.random() * 28; // go outward/up a bit, less far
+      const dy = (y - baseY) * 0.25 - 48 - Math.random() * 28;
 
       setHearts((prev) => [
         ...prev,
@@ -119,13 +114,11 @@ const FlyingHearts = ({ vampRef }) => {
     // eslint-disable-next-line
   }, [vampRef, ready]);
 
-  // Clean up hearts when finished animating
   React.useEffect(() => {
     if (!hearts.length) return;
     const timer = setTimeout(() => {
       setHearts((hs) =>
         hs.filter((h) => {
-          // Remove after anim duration + buffer
           return (
             Date.now() - Number(h.id.split(/[a-z]/).join("")) < h.duration + 900
           );
@@ -135,10 +128,8 @@ const FlyingHearts = ({ vampRef }) => {
     return () => clearTimeout(timer);
   }, [hearts]);
 
-  // Prevent error: do not access vampRef.current during render unless ready
   if (!ready) return null;
 
-  // Render all hearts, absolutely positioned over vamp's container (viewport)
   return (
     <div
       style={{
@@ -190,12 +181,98 @@ const FlyingHearts = ({ vampRef }) => {
   );
 };
 
+// Responsive CSS as string (for mobile)
+// We only override desktop values in mobile via media query
+const responsiveStyle = `
+@media (max-width: 900px) {
+  .thirdpage-root {
+    width: 100vw !important;
+    height: 100vh !important;
+    overflow-x: hidden !important;
+  }
+  .thirdpage-container {
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+  .thirdpage-letter-img {
+    position: absolute !important;
+    right: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+  .thirdpage-heart-img {
+    left: 35vw !important;
+    top: 1vh !important;
+    width: 40vw !important;
+    height: 17vh !important;
+    transform: rotate(-70deg) !important;
+  }
+  .thirdpage-centerbox {
+    top: 42vh !important;
+    left: 50vw !important;
+    transform: translate(-50%,-50%) !important;
+    flex-direction: column !important;
+  }
+  .thirdpage-title {
+    left: 0.5rem !important;
+    top: -2.5rem !important;
+    font-size: 1.13rem !important;
+    text-align: left !important;
+    transform: rotate(-10deg) !important;
+  }
+  .thirdpage-vamp-img {
+    width: 75vw !important;
+    height: 34vh !important;
+    margin-bottom: 10vw !important;
+    margin-top: 3vw !important;
+    display: block !important;
+  }
+  .thirdpage-clicktext {
+    top: calc(74vh) !important;
+    left: 50vw !important;
+    font-size: 0.98rem !important;
+    padding: 3vw 0;
+    background: none;
+    white-space: pre-line;
+    min-width: 80vw;
+    max-width: 99vw;
+    text-align: center !important;
+    transform: translate(-50%,0) rotate(-5deg) !important;
+  }
+  .thirdpage-vampicshow-img {
+    bottom: 8vw !important;
+    left: 50vw !important;
+    right: unset !important;
+    max-width: 74vw !important;
+    max-height: 18vh !important;
+    transform: translateX(-50%);
+    width: auto !important;
+    height: auto !important;
+  }
+}
+`;
+
 const ThirdPage = () => {
   const [showPopup, setShowPopup] = React.useState(false);
   const vampRef = React.useRef();
 
+  // Inject responsive CSS only once
+  React.useEffect(() => {
+    // Don't double-inject (important in React fast reload)
+    if (document.getElementById("thirdpage-responsive-style")) return;
+    const styleTag = document.createElement("style");
+    styleTag.id = "thirdpage-responsive-style";
+    styleTag.innerHTML = responsiveStyle;
+    document.head.appendChild(styleTag);
+    return () => {
+      if (document.getElementById("thirdpage-responsive-style"))
+        document.getElementById("thirdpage-responsive-style").remove();
+    };
+  }, []);
+
   return (
     <div
+      className="thirdpage-root"
       style={{
         color: "black",
         backgroundColor: "white",
@@ -205,6 +282,7 @@ const ThirdPage = () => {
       }}
     >
       <div
+        className="thirdpage-container"
         style={{
           position: "relative",
           width: "100%",
@@ -214,6 +292,7 @@ const ThirdPage = () => {
         <img
           src="/letter.png"
           alt="Paper"
+          className="thirdpage-letter-img"
           style={{
             display: "block",
             width: "100%",
@@ -226,6 +305,7 @@ const ThirdPage = () => {
         <img
           src="/heart.jpg"
           alt="Heart"
+          className="thirdpage-heart-img"
           style={{
             position: "absolute",
             top: -60,
@@ -242,6 +322,7 @@ const ThirdPage = () => {
         <FlyingHearts vampRef={vampRef} />
         <>
           <div
+            className="thirdpage-centerbox"
             style={{
               position: "absolute",
               top: "50%",
@@ -253,18 +334,18 @@ const ThirdPage = () => {
             }}
           >
             <span
+              className="thirdpage-title"
               style={{
                 position: "relative",
                 left: "4rem",
                 fontSize: "2rem",
                 color: "pink",
                 fontWeight: "bold",
-
                 whiteSpace: "pre-line",
                 textAlign: "right",
                 transform: "rotate(-10deg)",
                 fontFamily:
-                  "'Varela Round', 'Comic Sans MS', cursive, sans-serif", // Ensure fallback if Varela Round not loaded
+                  "'Varela Round', 'Comic Sans MS', cursive, sans-serif",
               }}
             >
               {"A Moment\nTo Remember\nyou&me"}
@@ -273,6 +354,7 @@ const ThirdPage = () => {
               ref={vampRef}
               src="/vamp.PNG"
               alt="Vamp"
+              className="thirdpage-vamp-img"
               style={{
                 transform: "rotate(-10deg)",
                 width: "40vw",
@@ -284,6 +366,7 @@ const ThirdPage = () => {
             />
           </div>
           <span
+            className="thirdpage-clicktext"
             style={{
               position: "absolute",
               top: "calc(50% + 30vh)",
@@ -300,7 +383,6 @@ const ThirdPage = () => {
               textAlign: "center",
               whiteSpace: "nowrap",
               pointerEvents: "none",
-              // no display block!
             }}
           >
             Click On Image to Watch Original
@@ -343,6 +425,7 @@ const ThirdPage = () => {
         <img
           src="/vampicshow.jpg"
           alt="Vampic Show"
+          className="thirdpage-vampicshow-img"
           style={{
             position: "absolute",
             bottom: "20px",
