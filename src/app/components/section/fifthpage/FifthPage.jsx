@@ -6,18 +6,21 @@ import React from "react";
 // - How do I change the scrolling speed? Change the value of the `scrollSpeed` variable (measured in pixels per frame, higher = faster).
 
 const FifthPageContent = () => {
-  const [count, setCount] = React.useState(15); // Changed from 5 to 15
+  const [count, setCount] = React.useState(20); // Set initial countdown
   const [showText, setShowText] = React.useState(false);
+  const [isMounted, setIsMounted] = React.useState(false);
   const textRef = React.useRef(null);
   const animationRef = React.useRef(0);
+
+  // Track if the page is fully open/visible (not minimized or in background)
+  const [pageVisible, setPageVisible] = React.useState(true);
 
   // Write your desired text here:
   const baseText =
     "You Are My Favourite Girl And I Love You So So So Much ...... ";
-  // (e.g. const baseText = "Put your own text here! ";)
 
   // ---- Change this value to change the scrolling speed! ----
-  const scrollSpeed = 7; // px per frame (higher = faster) <--- EDIT THIS LINE TO CHANGE SPEED
+  const scrollSpeed = 7; // px per frame (higher = faster)
   // ---------------------------------------------------------
 
   const repeatTimes = 8;
@@ -25,24 +28,43 @@ const FifthPageContent = () => {
     .map(() => baseText)
     .join("· ");
 
+  // Only start the countdown when the page is actually mounted
   React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Listen for page visibility (tab minimized/not visible) to pause/resume countdown
+  React.useEffect(() => {
+    function handleVisibilityChange() {
+      setPageVisible(document.visibilityState === "visible");
+    }
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    handleVisibilityChange();
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  // Countdown only runs if page is visible and mounted
+  React.useEffect(() => {
+    if (!isMounted) return;
+    if (!pageVisible) return; // Pause countdown if page isn't fully open
     if (count > 0 && !showText) {
-      const timer = setTimeout(() => setCount(count - 1), 1000);
+      const timer = setTimeout(() => setCount((c) => c - 1), 1000);
       return () => clearTimeout(timer);
     } else if (count === 0) {
       setShowText(true);
     }
-  }, [count, showText]);
+  }, [count, showText, isMounted, pageVisible]);
 
   // Animate text moving from right-to-left, starting from right edge
   React.useEffect(() => {
     if (!showText) return;
-    let pos = window.innerWidth; // Start from the right-most part of viewport
+    let pos = window.innerWidth;
 
     function animate() {
       if (textRef.current) {
-        pos -= scrollSpeed; // <--- Use scrollSpeed variable
-        // When the text has moved fully out left, reset to (right)
+        pos -= scrollSpeed;
         if (pos < -textRef.current.offsetWidth) {
           pos = window.innerWidth;
         }
@@ -52,8 +74,9 @@ const FifthPageContent = () => {
     }
     animationRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationRef.current);
-  }, [showText, scrollSpeed]); // <-- optional: can include scrollSpeed for reactivity
+  }, [showText, scrollSpeed]);
 
+  // If not yet shown text, show counter and message
   return showText ? (
     <div
       style={{
@@ -76,10 +99,10 @@ const FifthPageContent = () => {
           width: "100vw",
           height: "80vh",
           objectFit: "contain",
-          zIndex: 0, // top z-index
+          zIndex: 0,
           left: 0,
           bottom: 0,
-          opacity: 0.7, // subtle background
+          opacity: 0.7,
           pointerEvents: "none",
           userSelect: "none",
         }}
@@ -113,14 +136,27 @@ const FifthPageContent = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        flexDirection: "column",
       }}
     >
       <span
         style={{
           color: "pink",
           fontWeight: "bold",
+          fontSize: "2vh",
+          textAlign: "center",
+          marginBottom: "2vh",
+        }}
+      >
+        Before Going To Next Page Wait & Watch Kido
+      </span>
+      <span
+        style={{
+          color: "pink",
+          fontWeight: "bold",
           fontSize: "28vh",
           textAlign: "center",
+          lineHeight: "1",
         }}
       >
         {count}
@@ -145,12 +181,6 @@ const FifthPage = () => {
         fontWeight: "bold",
       }}
     >
-      {/* 
-        Where should you write the text?
-        --> Write your message in the baseText variable in FifthPageContent above.
-        How do you change the scrolling speed?
-        --> Change the value of the scrollSpeed variable in FifthPageContent above.
-      */}
       <FifthPageContent />
     </div>
   );
