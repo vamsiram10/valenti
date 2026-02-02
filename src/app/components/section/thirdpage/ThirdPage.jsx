@@ -1,9 +1,11 @@
 "use client";
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import FourthPage from "@/app/components/section/fourthpage/FourthPage";
 
 // Helper component moved above ThirdPage, so it is defined
 function EscClosePopup({ children, onClose }) {
-  React.useEffect(() => {
+  useEffect(() => {
     function handleKeyDown(e) {
       if (e.key === "Escape") {
         onClose();
@@ -37,15 +39,15 @@ const Heart = ({ style = {} }) => (
 
 // Hearts animation component
 const FlyingHearts = ({ vampRef }) => {
-  const [hearts, setHearts] = React.useState([]);
-  const [ready, setReady] = React.useState(false);
+  const [hearts, setHearts] = useState([]);
+  const [ready, setReady] = useState(false);
 
   // Wait until the vampRef is available in the DOM
-  React.useEffect(() => {
+  useEffect(() => {
     if (vampRef.current) setReady(true);
   }, [vampRef]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!ready) return;
     let running = true;
     let lastSpawn = Date.now();
@@ -114,7 +116,7 @@ const FlyingHearts = ({ vampRef }) => {
     // eslint-disable-next-line
   }, [vampRef, ready]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!hearts.length) return;
     const timer = setTimeout(() => {
       setHearts((hs) =>
@@ -253,11 +255,13 @@ const responsiveStyle = `
 `;
 
 const ThirdPage = () => {
-  const [showPopup, setShowPopup] = React.useState(false);
-  const vampRef = React.useRef();
+  const [showPopup, setShowPopup] = useState(false);
+  const [showFourthPage, setShowFourthPage] = useState(false);
+  const vampRef = useRef();
+  // const router = useRouter(); // Not needed if rendering component directly
 
   // Inject responsive CSS only once
-  React.useEffect(() => {
+  useEffect(() => {
     // Don't double-inject (important in React fast reload)
     if (document.getElementById("thirdpage-responsive-style")) return;
     const styleTag = document.createElement("style");
@@ -269,6 +273,16 @@ const ThirdPage = () => {
         document.getElementById("thirdpage-responsive-style").remove();
     };
   }, []);
+
+  // Handler to go to fourthpage: render FourthPage instead of routing
+  const handleClickMe = (e) => {
+    e.preventDefault();
+    setShowFourthPage(true);
+  };
+
+  if (showFourthPage) {
+    return <FourthPage />;
+  }
 
   return (
     <div
@@ -438,6 +452,32 @@ const ThirdPage = () => {
             display: "block",
           }}
         />
+        <button
+          onClick={handleClickMe}
+          style={{
+            background: "none",
+            border: "none",
+            padding: 0,
+            margin: 0,
+            cursor: "pointer",
+            position: "absolute",
+            left: "45%",
+            bottom: "20px",
+            transform: "translateX(-50%)",
+            zIndex: 10001,
+          }}
+        >
+          <img
+            src="/clickme.jpg"
+            alt="Click Me"
+            style={{
+              maxWidth: "60vw",
+              maxHeight: "15vh",
+              width: "auto",
+              height: "auto",
+            }}
+          />
+        </button>
       </div>
     </div>
   );

@@ -316,7 +316,7 @@ const FourthPage = () => {
     <div
       style={{
         color: "black",
-        backgroundColor: "white",
+        backgroundColor: "pink",
         width: "100vw",
         height: "100vh",
         boxSizing: "border-box",

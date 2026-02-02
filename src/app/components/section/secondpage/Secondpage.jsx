@@ -113,9 +113,8 @@ const SecondPage = () => {
   const handleYesClick = (e) => {
     e?.preventDefault?.();
     setYesClicked(true);
-    // Use router.push for client navigation
     setTimeout(() => {
-      router.push("/fourthpage");
+      window.location.href = "/fourthpage";
     }, 400);
   };
 
