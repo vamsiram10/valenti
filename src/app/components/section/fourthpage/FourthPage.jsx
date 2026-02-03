@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 // Helper to generate a heart SVG
 const HeartSVG = ({ size = 34, color = "#fd85b3", style = {} }) => (
@@ -19,6 +20,35 @@ const HeartSVG = ({ size = 34, color = "#fd85b3", style = {} }) => (
       strokeWidth="2"
     />
   </svg>
+);
+
+// Gift Button Wrapper - for accessibility and clear semantics
+const GiftBoxButton = ({ children, onClick, label }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    className="gift-box-button"
+    tabIndex={0}
+    aria-label={label}
+    style={{
+      background: "none",
+      border: "none",
+      padding: 0,
+      margin: 0,
+      cursor: "pointer",
+      outline: "none",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      position: "relative",
+      transition: "transform 0.1s",
+      appearance: "none",
+      WebkitAppearance: "none",
+      MozAppearance: "none",
+    }}
+  >
+    {children}
+  </button>
 );
 
 // Enhanced: allow label on front face (deg=0) of the cube
@@ -45,22 +75,7 @@ const ValentineGiftBox = ({
   const heartPatternBg = `url("data:image/svg+xml,${heartPatternDataUrl}") repeat`;
 
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      style={{
-        background: "none",
-        border: "none",
-        padding: 0,
-        margin: 0,
-        cursor: "pointer",
-        outline: "none",
-        display: "block",
-        position: "relative",
-        transition: "transform 0.1s",
-      }}
-      tabIndex={0}
-    >
+    <GiftBoxButton onClick={onClick} label={name ? name : "Valentine Gift"}>
       <div style={{ perspective: 700 }}>
         <div
           style={{
@@ -69,6 +84,7 @@ const ValentineGiftBox = ({
             position: "relative",
             transformStyle: "preserve-3d",
             animation: `${spinName} ${animationDuration} linear infinite`,
+            pointerEvents: "none", // ⭐ THIS FIXES IT
           }}
         >
           {/* Sides (front has label, others just heart pattern) */}
@@ -217,40 +233,6 @@ const ValentineGiftBox = ({
               zIndex: 1,
             }}
           />
-          {/* Ribbon Vertical */}
-          {/* <div
-            style={{
-              position: "absolute",
-              width: `${Math.round(size * 0.18)}px`,
-              height: `${size}px`,
-              background: `linear-gradient(180deg,${ribbonColor} 50%,${bowColor} 120%)`,
-              borderRadius: 24,
-              top: 0,
-              left: "50%",
-              transform: `translate(-50%,0) rotateY(0deg) translateZ(${
-                size / 2 + 1
-              }px)`,
-              zIndex: 6,
-              boxShadow: "0 1.5px 9px 0 #fd85b368",
-            }}
-          /> */}
-          {/* Ribbon Horizontal */}
-          {/* <div
-            style={{
-              position: "absolute",
-              width: `${size}px`,
-              height: `${Math.round(size * 0.18)}px`,
-              background: `linear-gradient(90deg,${ribbonColor} 60%,${bowColor} 130%)`,
-              borderRadius: 24,
-              top: "50%",
-              left: 0,
-              transform: `translate(0,-50%) rotateX(0deg) translateZ(${
-                size / 2 + 1
-              }px)`,
-              zIndex: 6,
-              boxShadow: "0 1.5px 9px 0 #fd85b368",
-            }} */}
-          {/* /> */}
           {/* Bow composed of hearts */}
           <div
             style={{
@@ -302,12 +284,19 @@ const ValentineGiftBox = ({
           </div>
         </div>
       </div>
-    </button>
+    </GiftBoxButton>
   );
 };
 
 const FourthPage = () => {
-  // Example button click handlers
+  const router = useRouter();
+
+  // When Gift 1 is clicked, use router.push for navigation, and log to console
+  const handleGift1Click = () => {
+    console.log("Gift 1 clicked");
+    router.push("/sixthpage");
+  };
+
   const handleGiftClick = (which) => {
     alert(`You clicked ${which}!`);
   };
@@ -336,7 +325,7 @@ const FourthPage = () => {
           ribbonColor="#fff"
           heartColor="#fd85b3"
           name="Gift 1"
-          onClick={() => handleGiftClick("Gift 1")}
+          onClick={handleGift1Click}
         />
         <ValentineGiftBox
           size={120}

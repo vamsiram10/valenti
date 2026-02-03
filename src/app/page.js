@@ -2,6 +2,7 @@ import FirstPage from "./components/section/firstpage/firstpage";
 import SecondPage from "./components/section/secondpage/Secondpage";
 import ThirdPage from "./components/section/thirdpage/ThirdPage";
 // import FourthPage from "./components/section/fourthpage/FourthPage";
+import SixthPage from "@/sixthpage/page";
 import FifthPage from "./components/section/fifthpage/FifthPage";
 export default function HomePage() {
   return (
@@ -9,7 +10,7 @@ export default function HomePage() {
       <FirstPage />
       <SecondPage />
       <FifthPage />
-
+      <SixthPage />
       <ThirdPage />
       {/* <FourthPage /> */}
     </div>
