@@ -464,7 +464,7 @@ const ThirdPage = () => {
             left: "45%",
             bottom: "20px",
             transform: "translateX(-50%)",
-            zIndex: 10001,
+            zIndex: 1000,
           }}
         >
           <img
