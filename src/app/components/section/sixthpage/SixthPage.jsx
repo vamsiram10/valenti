@@ -167,6 +167,30 @@ export default function SixthPage() {
                 whiteSpace: "pre-wrap",
               }}
             >
+              {/* Add a round image at the top of the letter */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  position: "absolute",
+                  right: "40px",
+                  bottom: "16rem",
+                }}
+              >
+                <img
+                  src="/vamp.png"
+                  alt="Valentine"
+                  style={{
+                    width: 200,
+                    height: 200,
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                    border: "3px solid #fd397a77",
+                    boxShadow: "0 2px 14px 0 rgba(253,57,122,0.07)",
+                    background: "#fff",
+                  }}
+                />
+              </div>
               My dearest Valentine,
               {"\n\n"}
               Roses are red,
