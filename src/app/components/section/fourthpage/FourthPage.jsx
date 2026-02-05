@@ -1,371 +1,382 @@
-"use client";
-import React from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useRef } from "react";
 
-// Helper to generate a heart SVG
-const HeartSVG = ({ size = 34, color = "#fd85b3", style = {} }) => (
-  <svg
-    viewBox="0 0 44 40"
-    width={size}
-    height={size}
-    style={{
-      display: "block",
-      ...style,
-    }}
-  >
-    <path
-      d="M32.5 2.5c-4 0-6.5 3-7.6 4.7C23.8 5.5 21.1 2.5 17.5 2.5 12.1 2.5 8 6.7 8 13.1c0 7.1 6.3 11.5 21 23.9 14.7-12.5 21-16.8 21-23.9C44 6.7 39.9 2.5 34.5 2.5z"
-      fill={color}
-      stroke="#fff"
-      strokeWidth="2"
-    />
-  </svg>
-);
+// -- Responsive CSS injection for mobile only --
+const responsiveMobileStyle = `
+@media (max-width: 767px) {
+  .fourthpage-semicircle-text {
+    top: 7% !important;
+    width: 98vw !important;
+    height: 18vw !important;
+  }
+  .fourthpage-img-left {
+    left: 2vw !important;
+    top: 76% !important;
+    img {
+      max-width: 30vw !important;
+      max-height: 20vw !important;
+      border-radius: 2vw !important;
+    }
+  }
+  .fourthpage-img-right {
+    right: 2vw !important;
+    top: 76% !important;
+    img {
+      max-width: 35vw !important;
+      max-height: 26vw !important;
+    }
+  }
+  .fourthpage-img-centerbottom {
+    bottom: 1vh !important;
+    left: 50vw !important;
+    img {
+      max-width: 36vw !important;
+      max-height: 19vw !important;
+    }
+  }
+  .fourthpage-youare {
+    top: 60% !important;
+    left: 50vw !important;
+    img {
+      max-width: 36vw !important;
+      max-height: 18vw !important;
+    }
+  }
+  .fourthpage-forever {
+    top: 79% !important;
+    left: 76vw !important;
+    img {
+      max-width: 36vw !important;
+      max-height: 17vw !important;
+      right: unset !important;
+      left: 0 !important;
+      position: static !important;
+    }
+  }
+  .fourthpage-flower-main {
+    max-width: 80vw !important;
+    max-height: 35vw !important;
+    left: 50vw !important;
+    top: 31% !important;
+    position: absolute !important;
+    transform: translateX(-50%) !important;
+  }
+}
+`;
 
-// Gift Button Wrapper - for accessibility and clear semantics
-const GiftBoxButton = ({ children, onClick, label }) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className="gift-box-button"
-    tabIndex={0}
-    aria-label={label}
-    style={{
-      background: "none",
-      border: "none",
-      padding: 0,
-      margin: 0,
-      cursor: "pointer",
-      outline: "none",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      position: "relative",
-      transition: "transform 0.1s",
-      appearance: "none",
-      WebkitAppearance: "none",
-      MozAppearance: "none",
-    }}
-  >
-    {children}
-  </button>
-);
+function randomBetween(a, b) {
+  return Math.random() * (b - a) + a;
+}
 
-// Enhanced: allow label on front face (deg=0) of the cube
-const ValentineGiftBox = ({
-  size = 120,
-  spinName = "valentineSpin1",
-  animationDuration = "4s",
-  bowColor = "#fd85b3",
-  ribbonColor = "transparent",
-  heartColor = "#fd85b3",
-  name = "",
-  onClick = () => {},
-}) => {
-  // All sides gradient with soft valentine colors
-  const sideGradient = "linear-gradient(135deg, #fd85b3 60%, #ffb1bc 100%)";
+const HEART_COLORS = [
+  "#ffb6d5", // main light pink
+  "#ffc8dd",
+  "#ffd6ea",
+  "#ffe1f0",
+  "#ff99cc",
+  "#ffb3de",
+  "#ffaad5",
+];
 
-  // Heart pattern as SVG background encoded as data URL
-  const heartPatternDataUrl = encodeURIComponent(`
-    <svg width="44" height="40" xmlns="http://www.w3.org/2000/svg">
-      <path d="M32.5 2.5c-4 0-6.5 3-7.6 4.7C23.8 5.5 21.1 2.5 17.5 2.5 12.1 2.5 8 6.7 8 13.1c0 7.1 6.3 11.5 21 23.9 14.7-12.5 21-16.8 21-23.9C44 6.7 39.9 2.5 34.5 2.5z" fill="${heartColor}" stroke="#fff" stroke-width="1"/>
-    </svg>
-  `);
+function HeartPoppers() {
+  const containerRef = useRef();
 
-  const heartPatternBg = `url("data:image/svg+xml,${heartPatternDataUrl}") repeat`;
+  useEffect(() => {
+    const container = containerRef.current;
+
+    let running = true;
+    function popHeart() {
+      if (!running) return;
+      for (let i = 0; i < 2; i++) {
+        const heart = document.createElement("div");
+        const size = randomBetween(16, 48); // px
+        const left = randomBetween(0, 100); // vw
+        const rotate = randomBetween(-35, 35);
+        const duration = randomBetween(2, 4.8); // s
+        const color =
+          HEART_COLORS[Math.floor(Math.random() * HEART_COLORS.length)];
+        heart.innerHTML = `
+          <svg viewBox="0 0 32 29.6" fill="${color}" xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
+            <path d="M23.6,0c-2.7,0-5.1,1.7-6.6,4.1C15.5,1.7,13.1,0,10.4,0C4.7,0,0,4.7,0,10.4
+                  c0,6.4,6.7,11.6,16,19.2c9.3-7.6,16-12.8,16-19.2C32,4.7,27.3,0,23.6,0z"/>
+          </svg>
+        `;
+        heart.style.position = "fixed";
+        heart.style.left = `${left}vw`;
+        heart.style.top = "100vh";
+        heart.style.pointerEvents = "none";
+        heart.style.transform = `translateY(0) rotate(${rotate}deg)`;
+        heart.style.transition = `transform ${duration}s cubic-bezier(0.3, 0.1, 0.8, 0.8), opacity ${duration}s`;
+        heart.style.opacity = 1;
+        heart.style.zIndex = 9999;
+
+        container.appendChild(heart);
+
+        setTimeout(() => {
+          heart.style.transform = `translateY(-110vh) rotate(${
+            rotate + 45
+          }deg) scale(${randomBetween(0.7, 1.3)})`;
+          heart.style.opacity = 0;
+        }, 16);
+
+        setTimeout(() => {
+          if (container.contains(heart)) container.removeChild(heart);
+        }, duration * 1000 + 800);
+      }
+      setTimeout(popHeart, randomBetween(50, 100));
+    }
+
+    popHeart();
+    return () => {
+      running = false;
+    };
+  }, []);
 
   return (
-    <GiftBoxButton onClick={onClick} label={name ? name : "Valentine Gift"}>
-      <div style={{ perspective: 700 }}>
-        <div
-          style={{
-            width: size,
-            height: size,
-            position: "relative",
-            transformStyle: "preserve-3d",
-            animation: `${spinName} ${animationDuration} linear infinite`,
-            pointerEvents: "none", // ⭐ THIS FIXES IT
-          }}
-        >
-          {/* Sides (front has label, others just heart pattern) */}
-          {[0, 180, 90, -90].map((deg, idx) => (
-            <div
-              key={deg}
-              style={{
-                position: "absolute",
-                width: `${size}px`,
-                height: `${size}px`,
-                // Do not use 'background' shorthand with backgroundSize.
-                backgroundImage: `${sideGradient}, ${heartPatternBg}`,
-                backgroundPosition: "0 0, 0 0",
-                backgroundRepeat: "no-repeat, repeat",
-                backgroundSize: "100% 100%, 20% auto",
-                border: "4px solid #fff",
-                borderRadius: 16,
-                boxShadow: "0 7px 40px #fd85b333",
-                transform: `rotateY(${deg}deg) translateZ(${size / 2}px)`,
-                overflow: "hidden",
-                display: deg === 0 ? "flex" : undefined,
-                alignItems: deg === 0 ? "center" : undefined,
-                justifyContent: deg === 0 ? "center" : undefined,
-              }}
-            >
-              {/* Show the label only on the front side (deg === 0) */}
-              {deg === 0 && name && (
-                <span
-                  style={{
-                    fontSize: Math.round(size * 0.22),
-                    color: "#fff",
-                    fontWeight: 900,
-                    textShadow:
-                      "0 2px 16px #fd85b399, 0 1px 1px #fd2570, 0 0 1px #fff",
-                    userSelect: "none",
-                    letterSpacing: "2px",
-                    fontFamily: 'inherit, "Segoe UI", sans-serif',
-                    // Optional label background for readability
-                    background: "rgba(255, 133, 179, 0.24)",
-                    padding: "0.19em 0.65em",
-                    borderRadius: "12px",
-                    boxShadow: "0 2px 10px #fd85b328",
-                  }}
-                >
-                  {name}
-                </span>
-              )}
-            </div>
-          ))}
-          {/* Top with hearts */}
-          <div
-            style={{
-              position: "absolute",
-              width: `${size}px`,
-              height: `${size}px`,
-              background: `linear-gradient(90deg, #fff5fa 60%, #fd85b3 130%)`,
-              border: "4px solid #fff",
-              borderRadius: "18px 18px 10px 10px",
-              transform: `rotateX(90deg) translateZ(${size / 2}px)`,
-              boxShadow: "0 15px 25px 0 #fd85b370",
-              zIndex: 3,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              position: "absolute",
-              overflow: "hidden",
-            }}
-          >
-            {/* Central Heart */}
-            <HeartSVG
-              size={Math.round(size * 0.45)}
-              color="#ff3e82"
-              style={{
-                position: "absolute",
-                top: "27%",
-                left: "27%",
-                filter: "drop-shadow(0 0 8px #fd85b375)",
-                zIndex: 4,
-                transition: "transform 0.25s cubic-bezier(0.4,0,0.2,1)",
-                transform: "scale(1.10) rotate(-8deg)",
-              }}
-            />
-            {/* Small hearts in corners */}
-            <HeartSVG
-              size={22}
-              color="#ffb6d9"
-              style={{
-                position: "absolute",
-                left: 8,
-                top: 8,
-                opacity: 0.82,
-                filter: "drop-shadow(0 1px 6px #ffe0ef)",
-                transition: "transform 0.18s",
-              }}
-            />
-            <HeartSVG
-              size={20}
-              color="#ffd2e7"
-              style={{
-                position: "absolute",
-                right: 8,
-                top: 12,
-                opacity: 0.75,
-                filter: "drop-shadow(0 1px 7px #ffd8ea)",
-                transform: "rotate(12deg) scale(1.06)",
-                transition: "transform 0.18s",
-              }}
-            />
-            <HeartSVG
-              size={21}
-              color="#ffbbdc"
-              style={{
-                position: "absolute",
-                left: 12,
-                bottom: 8,
-                opacity: 0.8,
-                filter: "drop-shadow(0 1.5px 8px #ffcbe8)",
-                transform: "rotate(-11deg) scale(0.98)",
-                transition: "transform 0.18s",
-              }}
-            />
-            <HeartSVG
-              size={20}
-              color="#ffe4f2"
-              style={{
-                position: "absolute",
-                right: 10,
-                bottom: 10,
-                opacity: 0.7,
-                filter: "drop-shadow(0 1px 8px #ffdff1)",
-                transform: "rotate(8deg) scale(1.02)",
-                transition: "transform 0.18s",
-              }}
-            />
-          </div>
-          {/* Bottom (simple soft pink) */}
-          <div
-            style={{
-              position: "absolute",
-              width: `${size}px`,
-              height: `${size}px`,
-              background: "linear-gradient(135deg,#fd85b3 60%,#fff0f7 120%)",
-              border: "4px solid #fff",
-              borderRadius: "10px 10px 18px 18px",
-              transform: `rotateX(-90deg) translateZ(${size / 2}px)`,
-              zIndex: 1,
-            }}
-          />
-          {/* Bow composed of hearts */}
-          <div
-            style={{
-              position: "absolute",
-              top: -Math.round(size * 0.24),
-              left: "50%",
-              transform: "translateX(-50%)",
-              zIndex: 10,
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            {/* Left heart bow */}
-            <HeartSVG
-              size={Math.round(size * 0.28)}
-              color={bowColor}
-              style={{
-                transform: "rotate(-32deg)",
-                filter: "drop-shadow(0px 2px 5px #fd85b388)",
-                position: "relative",
-                left: -Math.round(size * 0.12),
-                top: 8,
-              }}
-            />
-            {/* Center heart knot */}
-            <HeartSVG
-              size={Math.round(size * 0.17)}
-              color={bowColor}
-              style={{
-                margin: "0 8px",
-                filter: "drop-shadow(0px 1.5px 4px #fd85b377)",
-                position: "relative",
-                top: 0,
-              }}
-            />
-            {/* Right heart bow */}
-            <HeartSVG
-              size={Math.round(size * 0.28)}
-              color={bowColor}
-              style={{
-                transform: "rotate(32deg)",
-                filter: "drop-shadow(0px 2px 5px #fd85b388)",
-                position: "relative",
-                right: -Math.round(size * 0.12),
-                top: 8,
-              }}
-            />
-          </div>
-        </div>
-      </div>
-    </GiftBoxButton>
+    <div
+      ref={containerRef}
+      style={{
+        pointerEvents: "none",
+        position: "fixed",
+        left: 0,
+        top: 0,
+        width: "100vw",
+        height: "100vh",
+        zIndex: 15,
+      }}
+    />
   );
-};
+}
 
-const FourthPage = () => {
-  const router = useRouter();
-
-  // When Gift 1 is clicked, use router.push for navigation, and log to console
-  const handleGift1Click = () => {
-    console.log("Gift 1 clicked");
-    router.push("/sixthpage");
-  };
-
-  const handleGiftClick = (which) => {
-    alert(`You clicked ${which}!`);
-  };
+export default function FourthPage() {
+  // Inject responsive CSS for mobile only (only once).
+  useEffect(() => {
+    if (!document.getElementById("fourthpage-responsive-style")) {
+      const styleTag = document.createElement("style");
+      styleTag.id = "fourthpage-responsive-style";
+      styleTag.innerHTML = responsiveMobileStyle;
+      document.head.appendChild(styleTag);
+    }
+    return () => {
+      if (document.getElementById("fourthpage-responsive-style"))
+        document.getElementById("fourthpage-responsive-style").remove();
+    };
+  }, []);
 
   return (
     <div
       style={{
-        color: "black",
-        backgroundColor: "pink",
+        background: "#fff",
         width: "100vw",
         height: "100vh",
-        boxSizing: "border-box",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        fontSize: "2rem",
-        fontWeight: "bold",
+        position: "relative",
+        fontFamily: "'Staatliches', cursive, sans-serif",
+        color: "#ffb6d5", // light pink
+        overflow: "hidden",
       }}
     >
-      <div style={{ display: "flex", gap: "10vw" }}>
-        <ValentineGiftBox
-          size={120}
-          spinName="valentineSpin1"
-          animationDuration="4s"
-          bowColor="#fd85b3"
-          ribbonColor="#fff"
-          heartColor="#fd85b3"
-          name="Gift 1"
-          onClick={handleGift1Click}
-        />
-        <ValentineGiftBox
-          size={120}
-          spinName="valentineSpin2"
-          animationDuration="4.3s"
-          bowColor="#ffb1bc"
-          ribbonColor="#fdf1f7"
-          heartColor="#ffb1bc"
-          name="Gift 2"
-          onClick={() => handleGiftClick("Gift 2")}
-        />
-        <ValentineGiftBox
-          size={120}
-          spinName="valentineSpin3"
-          animationDuration="3.7s"
-          bowColor="#ffc8dc"
-          ribbonColor="#fff7fa"
-          heartColor="#ffc8dc"
-          name="Gift 3"
-          onClick={() => handleGiftClick("Gift 3")}
-        />
-        <style>
-          {`
-          @keyframes valentineSpin1 {
-            0% { transform: rotateY(6deg) rotateX(-13deg) rotateZ(-3deg);}
-            100% { transform: rotateY(366deg) rotateX(-13deg) rotateZ(-3deg);}
-          }
-          @keyframes valentineSpin2 {
-            0% { transform: rotateY(-25deg) rotateX(10deg) rotateZ(5deg);}
-            100% { transform: rotateY(335deg) rotateX(10deg) rotateZ(5deg);}
-          }
-          @keyframes valentineSpin3 {
-            0% { transform: rotateY(18deg) rotateX(-17deg) rotateZ(-7deg);}
-            100% { transform: rotateY(378deg) rotateX(-17deg) rotateZ(-7deg);}
-          }
-        `}
-        </style>
+      <HeartPoppers />
+      {/* Semi-circle text above image */}
+      <div
+        className="fourthpage-semicircle-text"
+        style={{
+          position: "absolute",
+          top: "18%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "57vw",
+          height: "12vw",
+          pointerEvents: "none",
+          zIndex: 100,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-end",
+        }}
+      >
+        <svg
+          viewBox="0 0 500 180"
+          width="100%"
+          height="100%"
+          style={{ overflow: "visible" }}
+        >
+          <defs>
+            <path
+              id="semiCirclePath"
+              d="M 30,150 A 220,110 0 0 1 470,150"
+              fill="none"
+            />
+          </defs>
+          <text
+            fill="#ffb6d5"
+            fontSize="36"
+            fontFamily="'Staatliches', cursive, sans-serif"
+            fontWeight="bold"
+            letterSpacing="3"
+          >
+            <textPath
+              href="#semiCirclePath"
+              startOffset="50%"
+              textAnchor="middle"
+            >
+              Flowers For You My Love 🫶🏻
+            </textPath>
+          </text>
+        </svg>
       </div>
+
+      {/* Left center text */}
+      <div
+        className="fourthpage-img-left"
+        style={{
+          position: "absolute",
+          left: "3vw",
+          top: "90%",
+          transform: "translateY(-50%)",
+          pointerEvents: "none",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 0,
+        }}
+      >
+        <img
+          src="/ialways.jpg"
+          alt="I Always Love You"
+          style={{
+            borderRadius: "1.5vw",
+            border: "2px solid #fff",
+            maxWidth: "220px",
+            maxHeight: "170px",
+            objectFit: "cover",
+            background: "#ffb6d5",
+          }}
+        />
+      </div>
+      <div
+        className="fourthpage-img-right"
+        style={{
+          position: "absolute",
+          right: "3vw",
+          top: "90%",
+          transform: "translateY(-50%)",
+          zIndex: 101,
+          pointerEvents: "none",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 0,
+        }}
+      >
+        <img
+          src="/tothe.png"
+          alt="To The"
+          style={{
+            maxWidth: "350px",
+            maxHeight: "280px",
+            objectFit: "contain",
+            background: "#ffb6d5",
+            display: "block",
+          }}
+        />
+      </div>
+      <div
+        className="fourthpage-img-centerbottom"
+        style={{
+          position: "absolute",
+          bottom: "4vh",
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 0,
+          pointerEvents: "none",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <img
+          src="/ap.jpg"
+          alt="Always"
+          style={{
+            border: "2px solid #fff",
+            maxWidth: "250px",
+            maxHeight: "190px",
+            objectFit: "cover",
+            background: "#ffb6d5",
+            display: "block",
+          }}
+        />
+      </div>
+      <div
+        className="fourthpage-youare"
+        style={{
+          position: "absolute",
+          top: "75%",
+          left: "30%",
+          transform: "translateX(-50%)",
+          zIndex: 0,
+          pointerEvents: "none",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <img
+          src="/youare.png"
+          alt="You Are"
+          style={{
+            maxWidth: "30vw",
+            maxHeight: "30vh",
+            display: "block",
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+        />
+      </div>
+      <div
+        className="fourthpage-forever"
+        style={{
+          position: "absolute",
+          top: "90%",
+          left: "77%",
+          transform: "translateX(-50%)",
+          zIndex: 0,
+          pointerEvents: "none",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <img
+          src="/forever.png"
+          alt="Forever"
+          style={{
+            position: "absolute",
+            right: "26%",
+            maxWidth: "30vw",
+            maxHeight: "30vh",
+            zIndex: 1,
+          }}
+        />
+      </div>
+
+      <img
+        className="fourthpage-flower-main"
+        src="/flower.jpg"
+        alt="Flower"
+        style={{
+          maxWidth: "45vw",
+          maxHeight: "45vh",
+          display: "block",
+          zIndex: 1,
+        }}
+      />
+
+      {/* Add boo.jpeg to the right top middle corner, big */}
+      {/* Add me.png to the left bottom corner */}
+      {/* Add cute emoji.jpeg to the middle right side */}
+      {/* Add aa.png to the right corner */}
     </div>
   );
-};
-
-export default FourthPage;
+}

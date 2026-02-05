@@ -238,7 +238,7 @@ const SecondPage = () => {
         <div
           style={{
             color: "pink",
-            fontSize: "4.5rem",
+            fontSize: "3rem",
             fontWeight: "bold",
             marginBottom: 38,
             letterSpacing: 1,
@@ -252,7 +252,7 @@ const SecondPage = () => {
           {yesClicked ? (
             <span>YAY! 💖 hehe🤭</span>
           ) : (
-            <span>Will you be my Valentine?</span>
+            <span>Pravalli Will you be my Valentine?</span>
           )}
         </div>
 

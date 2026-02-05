@@ -20,7 +20,7 @@ const FifthPageContent = () => {
     "You Are My Favourite Girl And I Love You So So So Much ...... ";
 
   // ---- Change this value to change the scrolling speed! ----
-  const scrollSpeed = 7; // px per frame (higher = faster)
+  const scrollSpeed = 13; // px per frame (higher = faster)
   // ---------------------------------------------------------
 
   const repeatTimes = 8;
