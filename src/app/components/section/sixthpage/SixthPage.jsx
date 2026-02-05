@@ -94,10 +94,11 @@ export default function SixthPage() {
               boxShadow: "0 4px 32px #fd397a22",
               border: "2px solid #fd397a",
               padding: "54px 48px 54px 64px",
-              minWidth: 490,
+              minWidth: 700, // was 550, increased
               minHeight: 600,
               position: "relative",
-              maxWidth: "95vw",
+              maxWidth: "1000px", // was 95vw, set larger fixed px max width
+              width: "80vw", // new: use a larger width
               maxHeight: "90vh",
               overflow: "hidden",
               fontFamily: "'Shadows Into Light', 'Caveat', cursive, sans-serif",
@@ -149,17 +150,23 @@ export default function SixthPage() {
               style={{
                 position: "relative",
                 zIndex: 2,
-                background: "transparent",
+                background:
+                  "linear-gradient(135deg, rgba(255,217,234,0.52) 25%, rgba(221,242,253,0.11) 100%)",
+                boxShadow:
+                  "0 12px 64px 6px rgba(250,80,168,0.10), 0 2px 16px 3px rgba(249,39,116,0.10) inset",
+                backdropFilter: "blur(2.5px) saturate(1.22)",
+                borderRadius: "24px 20px 18px 26px/22px 28px 18px 19px",
+                border: "2.3px solid rgba(255,64,154,0.16)",
                 width: "100%",
                 height: "100%",
                 fontFamily:
                   "'Shadows Into Light', 'Caveat', cursive, sans-serif",
                 fontSize: "1.35rem",
-                color: "#d81b60",
+                color: "black",
                 outline: "none",
                 border: "none",
-                paddingLeft: 60,
-                paddingTop: 4,
+                paddingLeft: 0,
+                paddingTop: 68,
                 paddingRight: 4,
                 lineHeight: "32px",
                 letterSpacing: "0.03em",
@@ -168,12 +175,32 @@ export default function SixthPage() {
               }}
             >
               {/* Add a round image at the top of the letter */}
+              {/* Heading for the letter */}
+              <div
+                style={{
+                  width: "100%",
+                  textAlign: "center",
+                  fontWeight: 700,
+                  fontSize: "2.1rem",
+
+                  color: "#d81b60",
+                  position: "absolute",
+                  top: "0px",
+                  right: "50px",
+                  fontFamily:
+                    "'Dancing Script', 'Pacifico', 'Shadows Into Light', 'Caveat', cursive, sans-serif",
+                  fontWeight: 200, // Thin font weight
+                }}
+              >
+                MY LETTER TO YOU
+              </div>
+              {/* Add a round image at the top of the letter */}
               <div
                 style={{
                   display: "flex",
                   justifyContent: "center",
                   position: "absolute",
-                  right: "40px",
+                  right: "5px",
                   bottom: "16rem",
                 }}
               >
@@ -186,7 +213,7 @@ export default function SixthPage() {
                     objectFit: "cover",
                     borderRadius: "50%",
                     border: "3px solid #fd397a77",
-                    boxShadow: "0 2px 14px 0 rgba(253,57,122,0.07)",
+
                     background: "#fff",
                   }}
                 />
