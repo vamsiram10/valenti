@@ -13,6 +13,9 @@ export default function RootLayout({ children }) {
           backgroundColor: "pink",
           margin: 0,
           padding: 0,
+          minWidth: "100vw",
+          overflowX: "hidden",
+          // overflowY: "hidden",
         }}
       >
         {children}

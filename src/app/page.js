@@ -4,9 +4,12 @@ import ThirdPage from "./components/section/thirdpage/ThirdPage";
 // import FourthPage from "./components/section/fourthpage/FourthPage";
 import SixthPage from "@/sixthpage/page";
 import FifthPage from "./components/section/fifthpage/FifthPage";
+import MusicPlayer from "./components/MusicPlayer";
+
 export default function HomePage() {
   return (
     <div style={{ color: "pink" }}>
+      <MusicPlayer />
       <FirstPage />
       <SecondPage />
       <FifthPage />
