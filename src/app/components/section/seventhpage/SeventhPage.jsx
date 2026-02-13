@@ -68,6 +68,7 @@ function createHeartProps() {
  */
 export default function SeventhPage() {
   const containerRef = useRef(null);
+  const vampRef = useRef(null); // <-- Defined vampRef here
   const heartCount = 65;
   const [hearts, setHearts] = useState([]);
   const [showLoader, setShowLoader] = useState(true);
@@ -240,6 +241,7 @@ export default function SeventhPage() {
           </div>
         ))}
         <img
+          ref={vampRef}
           src="/discmain.jpg"
           alt="Disc"
           style={{
