@@ -259,7 +259,7 @@ export default function SixthPage() {
             }}
           >
             <img
-              src="/US.JPG"
+              src="/us.JPG"
               alt="Valentine"
               style={{
                 width: 250,

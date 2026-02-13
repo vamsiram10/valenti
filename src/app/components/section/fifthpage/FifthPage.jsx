@@ -6,7 +6,7 @@ import React from "react";
 // - How do I change the scrolling speed? Change the value of the `scrollSpeed` variable (measured in pixels per frame, higher = faster).
 
 const FifthPageContent = () => {
-  const [count, setCount] = React.useState(25); // Set initial countdown
+  const [count, setCount] = React.useState(15); // Set initial countdown
   const [showText, setShowText] = React.useState(false);
   const [isMounted, setIsMounted] = React.useState(false);
   const textRef = React.useRef(null);
