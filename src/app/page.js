@@ -1,3 +1,4 @@
+"use client";
 import FirstPage from "./components/section/firstpage/firstpage";
 import SecondPage from "./components/section/secondpage/Secondpage";
 import ThirdPage from "./components/section/thirdpage/ThirdPage";
@@ -12,23 +13,29 @@ import TenPage from "./components/section/tenpage/TenPage";
 
 export default function HomePage() {
   return (
-    <div style={{ color: "pink" }}>
-      <MusicPlayer />
-      <FirstPage />
-      <SecondPage />
-      <FourthPage />
+    <>
+      {/* Add favicon for us.JPG */}
+      <head>
+        <link rel="icon" type="hearts.jpg" href="/hearts.jpg" />
+      </head>
+      <div style={{ color: "pink" }}>
+        <MusicPlayer />
+        <FirstPage />
+        <SecondPage />
+        <FourthPage />
 
-      <FifthPage />
+        <FifthPage />
 
-      <NinePage />
+        <NinePage />
 
-      <SixthPage />
-      <TenPage />
-      <SeventhPage />
+        <SixthPage />
+        <TenPage />
+        <SeventhPage />
 
-      <ThirdPage />
-      <EightPage />
-      {/* <FourthPage /> */}
-    </div>
+        <ThirdPage />
+        <EightPage />
+        {/* <FourthPage /> */}
+      </div>
+    </>
   );
 }
