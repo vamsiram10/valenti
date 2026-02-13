@@ -3,17 +3,25 @@ import React, { useRef, useEffect, useState } from "react";
 
 export default function NinePage() {
   const videoRef = useRef(null);
-  const [muted, setMuted] = useState(() => {
-    // Try to get previous state from localStorage on first render (client only)
-    if (typeof window !== "undefined") {
-      return window.localStorage?.getItem("ninepage-muted") === "true";
-    }
-    return true;
-  });
+
+  // Use `undefined` initial state to avoid hydration mismatch
+  const [muted, setMuted] = useState(undefined);
   const [videoError, setVideoError] = useState(false);
 
-  // Update localStorage and video muted status on change
+  // On mount, initialize muted state from localStorage (client only)
   useEffect(() => {
+    // Default to muted: true if no preference stored
+    const stored =
+      typeof window !== "undefined"
+        ? window.localStorage?.getItem("ninepage-muted")
+        : null;
+    const initMuted = stored === null ? true : stored === "true";
+    setMuted(initMuted);
+  }, []);
+
+  // On mute state change, save to localStorage and mute the video
+  useEffect(() => {
+    if (muted === undefined) return; // Don't run until value is set
     if (typeof window !== "undefined" && videoRef.current) {
       videoRef.current.muted = muted;
       window.localStorage.setItem("ninepage-muted", String(muted));
@@ -22,17 +30,16 @@ export default function NinePage() {
 
   // Auto-play fix: re-attempt to play whenever mute state changes or ref connects
   useEffect(() => {
+    if (muted === undefined) return;
     const tryPlay = () => {
       if (videoRef.current) {
-        // It's best to try play after muted has been applied, especially for autoplay restrictions
         const playPromise = videoRef.current.play();
         if (playPromise !== undefined) {
           playPromise.catch(() => {
-            // If autoplay is blocked, try to mute and re-play
             if (!videoRef.current.muted) {
               videoRef.current.muted = true;
               setMuted(true);
-              videoRef.current.play().catch(() => {}); // Silent fail
+              videoRef.current.play().catch(() => {});
             }
           });
         }
@@ -41,14 +48,19 @@ export default function NinePage() {
     tryPlay();
   }, [muted]);
 
-  // Reset video error state if src changes
-  useEffect(() => {
-    setVideoError(false);
-  }, []);
+  // Reset video error state if src changes (optional - can be removed if src never changes)
+  // useEffect(() => {
+  //   setVideoError(false);
+  // }, []);
 
   const handleMuteToggle = () => {
-    setMuted((prev) => !prev);
+    if (muted !== undefined) {
+      setMuted((prev) => !prev);
+    }
   };
+
+  // Until we know muted state from client, don't render the video to avoid hydration mismatch
+  if (muted === undefined) return null;
 
   return (
     <div
@@ -102,7 +114,7 @@ export default function NinePage() {
             boxShadow: "0 2px 24px rgba(238,120,153,0.22)",
           }}
         >
-          Sorry, the video can't be played.
+          Sorry, the video can&apos;t be played.
           <br />
           Please check the file path, browser compatibility, or try refreshing
           the page.
@@ -112,7 +124,7 @@ export default function NinePage() {
         onClick={handleMuteToggle}
         style={{
           position: "absolute",
-          top: "2vw",
+          bottom: "2vw",
           right: "2vw",
           zIndex: 9,
           background: "rgba(255,255,255,0.8)",
@@ -132,8 +144,8 @@ export default function NinePage() {
       <div
         style={{
           position: "absolute",
-          top: "20%",
-          right: "55rem",
+          top: "25%",
+          right: "-6rem",
           width: "30vw",
           textAlign: "justify",
           display: "flex",
@@ -156,24 +168,25 @@ export default function NinePage() {
         <br />
         <span
           style={{
-            fontSize: "1vw",
+            fontSize: "1.1vw",
             fontWeight: 400,
             color: "#ffe1f0",
             textShadow: "0 0 18px #ee78ef",
             display: "block",
-            marginTop: "1.1vw",
+            marginTop: "1vw",
             textAlign: "justify",
             maxWidth: "58vw",
           }}
         >
-          This was the first time in months that I’ve seen you truly happy. I
-          don’t know why, but I could feel that inner child inside you again.
-          Whenever I see this vedio, it makes me so happy watching you smile and
-          play like a little kid. I’ve missed you so much all these months, and
-          I just want to spend time with that kiddo and enjoy every moment with
-          her for my lifetime. I promise that this time I will protect that
-          little spark and make sure that kiddo never disappears I’ll do
-          everything possible in my own ways to keep you smiling and safe.
+          This was the first time in months that I&#39;ve seen you truly happy.
+          I don&#39;t know why, but I could feel that inner child inside you
+          again. Whenever I see this vedio, it makes me so happy watching you
+          smile and play like a little kid. I&#39;ve missed you so much all
+          these months, and I just want to spend time with that kiddo and enjoy
+          every moment with her for my lifetime. I promise that this time I will
+          protect that little spark and make sure that kiddo never disappears
+          I&#39;ll do everything possible in my own ways to keep you smiling and
+          safe.
         </span>
       </div>
     </div>

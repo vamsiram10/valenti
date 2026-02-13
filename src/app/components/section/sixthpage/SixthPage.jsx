@@ -1,6 +1,94 @@
 "use client";
 import { useState, useRef } from "react";
 
+// A simple array of sparkle configurations for the loader background
+const SPARKLES = [
+  { top: "12%", left: "15%", size: 18, delay: "0s", opacity: 0.72 },
+  { top: "65%", left: "35%", size: 16, delay: "2.2s", opacity: 0.77 },
+  { top: "33%", left: "74%", size: 26, delay: "1.3s", opacity: 0.9 },
+  { top: "76%", left: "82%", size: 13, delay: "1.7s", opacity: 0.63 },
+  { top: "19%", left: "81%", size: 14, delay: "0.8s", opacity: 0.81 },
+  { top: "52%", left: "57%", size: 20, delay: "1.1s", opacity: 0.73 },
+  { top: "87%", left: "21%", size: 23, delay: "2.7s", opacity: 0.82 },
+  { top: "43%", left: "53%", size: 15, delay: "1.5s", opacity: 0.74 },
+  { top: "10%", left: "63%", size: 18, delay: "2.1s", opacity: 0.72 },
+  { top: "27%", left: "40%", size: 14, delay: "0.4s", opacity: 0.68 },
+];
+
+function LoaderSparkles() {
+  // Renders sparkle "stars" as absolutely positioned elements
+  return (
+    <div
+      className="loader-sparkles"
+      style={{
+        pointerEvents: "none",
+        position: "absolute",
+        width: "100vw",
+        height: "100vh",
+        left: 0,
+        top: 0,
+        zIndex: 2,
+        overflow: "hidden",
+        userSelect: "none",
+      }}
+    >
+      {SPARKLES.map((sparkle, idx) => (
+        <span
+          key={idx}
+          className="sparkle-anim"
+          style={{
+            position: "absolute",
+            top: sparkle.top,
+            left: sparkle.left,
+            width: sparkle.size,
+            height: sparkle.size,
+            opacity: sparkle.opacity,
+            filter: "drop-shadow(0 0 2px #fd397a44)",
+            zIndex: 2,
+            animationDelay: sparkle.delay,
+            pointerEvents: "none",
+          }}
+        >
+          {/* SVG sparkle for best anti-aliasing & animation */}
+          <svg
+            width={sparkle.size}
+            height={sparkle.size}
+            viewBox="0 0 24 24"
+            style={{
+              display: "block",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <polygon
+              points="12,2 14.2,8.5 21,9.2 15.6,13.7 17,21 12,17.2 7,21 8.4,13.7 3,9.2 9.8,8.5"
+              fill="#fd397a"
+            >
+              <animate
+                attributeName="opacity"
+                values="1;0.2;1"
+                dur="2.4s"
+                begin={sparkle.delay}
+                repeatCount="indefinite"
+              />
+              <animateTransform
+                attributeName="transform"
+                attributeType="XML"
+                type="scale"
+                values="1;1.22;1"
+                dur="1.8s"
+                begin={sparkle.delay}
+                additive="sum"
+                repeatCount="indefinite"
+              />
+            </polygon>
+          </svg>
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export default function SixthPage() {
   const [opened, setOpened] = useState(false);
   const [animate, setAnimate] = useState(false);
@@ -41,7 +129,7 @@ export default function SixthPage() {
             marginTop: "2.5rem",
 
             fontSize: "2rem",
-            color: "#fd397a",
+            color: "pink",
             fontWeight: "bold",
             letterSpacing: "0.02em",
             userSelect: "none",
@@ -149,13 +237,12 @@ export default function SixthPage() {
               width: "100%",
               textAlign: "center",
               fontWeight: 700,
-              fontSize: "2.1rem",
-              color: "#d81b60",
+              fontSize: "3rem",
+              color: "black",
               position: "absolute",
               top: "0px",
-              right: "50px",
-              fontFamily:
-                "'Dancing Script', 'Pacifico', 'Shadows Into Light', 'Caveat', cursive, sans-serif",
+              right: "69px",
+              fontFamily: "'Times New Roman', Times, serif",
               fontWeight: 200,
             }}
           >
@@ -168,15 +255,15 @@ export default function SixthPage() {
               justifyContent: "center",
               position: "absolute",
               right: "5px",
-              bottom: "16rem",
+              bottom: "3rem",
             }}
           >
             <img
-              src="/vamp.png"
+              src="/US.JPG"
               alt="Valentine"
               style={{
-                width: 200,
-                height: 200,
+                width: 250,
+                height: 250,
                 objectFit: "cover",
                 borderRadius: "50%",
                 border: "3px solid #fd397a77",
@@ -184,41 +271,50 @@ export default function SixthPage() {
               }}
             />
           </div>
-          My dearest Valentine,
-          {"\n\n"}
-          Roses are red,
-          {"\n"}
-          Violets are blue,
-          {"\n"}
-          Thank you for revealing your lovely hue.
-          {"\n"}
-          You make the sun rise brighter, and the stars seem a little closer
-          too.
-          {"\n\n"}
-          Every day with you is filled with moments I treasure,
-          {"\n"}
-          I&apos;m so lucky I get to call you mine, today and forever.
-          {"\n"}
-          Happy Valentine’s Day, Pravalli! 💖
-          {"\n\n"}
-          Love,
-          {"\n"}
-          Vikram
+          <span
+            style={{
+              fontSize: "1.4rem",
+              fontFamily: "'Times New Roman', Times, serif",
+            }}
+          >
+            Happy valentines!
+            <br />
+            <br />
+            You are the best thing that has ever happened to me . No matter what
+            the future brings , ik and i wish everything will be okay and fine ,
+            we went through good and bad times and so many ups and downs along
+            the way .
+            <br />
+            <br />
+            every day with you feels like a gift, idk why but i feel like your
+            presence makes everything better ra and your words and your actions
+            mean so much to me . From morning till night, I keep wishing I could
+            be there with you and I wish that from now on, everything between us
+            will be fine and full of happiness.
+            <br />
+            <br />I love You 💕
+          </span>
         </div>
         {/* Optional: drawn heart in the letter */}
-        <span
-          style={{
-            position: "absolute",
-            bottom: 24,
-            right: 42,
-            fontSize: "1.4rem",
-            zIndex: 5,
-            opacity: 0.6,
-            userSelect: "none",
-          }}
-        >
-          ♥
-        </span>
+        {Array.from({ length: 8 }).map((_, idx) => (
+          <span
+            key={idx}
+            style={{
+              position: "absolute",
+              // Arrange the hearts in a scattered pattern
+              bottom: 24 + Math.sin(idx) * 14 + idx * 10,
+              right: 42 + Math.cos(idx * 1.3) * 22 + idx * 12,
+              fontSize: `${1.4 + 0.18 * ((idx % 3) - 1)}rem`,
+              zIndex: 5,
+              opacity: 0.4 + 0.2 * (idx % 3),
+              userSelect: "none",
+              transform: `rotate(${(idx - 3) * 15}deg)`,
+              color: "#fd397a",
+            }}
+          >
+            ♥
+          </span>
+        ))}
       </div>
     );
   }
@@ -262,6 +358,18 @@ export default function SixthPage() {
           animation: letterOpen 0.7s cubic-bezier(0.65, 0, 0.25, 1) forwards;
           will-change: transform, filter, opacity;
         }
+        /* Sparkle Animations */
+        .sparkle-anim {
+          animation: sparkleTwinkle 2.1s infinite both alternate;
+        }
+        @keyframes sparkleTwinkle {
+          0% { opacity: 0.13; transform: scale(1) rotate(0deg);}
+          12% { opacity: 0.85;}
+          28% { opacity: 1;  }
+          52% { opacity: 0.88; }
+          87% { opacity: 0.35;  }
+          100% { opacity: 0.18; transform: scale(1.14) rotate(14deg);}
+        }
       `}</style>
       <div
         style={{
@@ -274,8 +382,10 @@ export default function SixthPage() {
           justifyContent: "center",
           position: "relative",
           flexDirection: "column",
+          overflow: "hidden",
         }}
       >
+        {!opened && <LoaderSparkles />}
         {content}
       </div>
     </>

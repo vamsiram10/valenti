@@ -419,7 +419,7 @@ const ThirdPage = () => {
                 onClick={() => setShowPopup(false)}
               >
                 <img
-                  src="/kiss2.jpg"
+                  src="/us.JPG"
                   alt="Popup"
                   style={{
                     maxWidth: "90vw",
@@ -452,32 +452,6 @@ const ThirdPage = () => {
             display: "block",
           }}
         />
-        <button
-          onClick={handleClickMe}
-          style={{
-            background: "none",
-            border: "none",
-            padding: 0,
-            margin: 0,
-            cursor: "pointer",
-            position: "absolute",
-            left: "45%",
-            bottom: "20px",
-            transform: "translateX(-50%)",
-            zIndex: 1000,
-          }}
-        >
-          <img
-            src="/clickme.jpg"
-            alt="Click Me"
-            style={{
-              maxWidth: "60vw",
-              maxHeight: "15vh",
-              width: "auto",
-              height: "auto",
-            }}
-          />
-        </button>
       </div>
     </div>
   );

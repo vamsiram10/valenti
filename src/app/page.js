@@ -8,6 +8,7 @@ import MusicPlayer from "./components/MusicPlayer";
 import SeventhPage from "./components/section/seventhpage/SeventhPage";
 import EightPage from "./components/section/eightpage/EightPage";
 import NinePage from "./components/section/ninepage/NinePage";
+import TenPage from "./components/section/tenpage/TenPage";
 
 export default function HomePage() {
   return (
@@ -15,12 +16,16 @@ export default function HomePage() {
       <MusicPlayer />
       <FirstPage />
       <SecondPage />
-      <NinePage />
+      <FourthPage />
 
       <FifthPage />
 
+      <NinePage />
+
       <SixthPage />
+      <TenPage />
       <SeventhPage />
+
       <ThirdPage />
       <EightPage />
       {/* <FourthPage /> */}
