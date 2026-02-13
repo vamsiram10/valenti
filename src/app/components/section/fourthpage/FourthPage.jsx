@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from "react";
+"use client";
+import React, { useEffect, useRef, useState } from "react";
 
 // -- Responsive CSS injection for mobile only --
 const responsiveMobileStyle = `
@@ -60,6 +61,16 @@ const responsiveMobileStyle = `
     position: absolute !important;
     transform: translateX(-50%) !important;
   }
+  .secret-img-custom {
+    width: 34vw !important;
+    height: auto !important;
+    max-width: 80vw !important;
+  }
+  .secret-img-text {
+    font-size: 5vw !important;
+    margin-left: 2vw !important;
+    margin-top: 4vw !important;
+  }
 }
 `;
 
@@ -102,7 +113,7 @@ function HeartPoppers() {
         `;
         heart.style.position = "fixed";
         heart.style.left = `${left}vw`;
-        heart.style.top = "100vh";
+        heart.style.top = "100%";
         heart.style.pointerEvents = "none";
         heart.style.transform = `translateY(0) rotate(${rotate}deg)`;
         heart.style.transition = `transform ${duration}s cubic-bezier(0.3, 0.1, 0.8, 0.8), opacity ${duration}s`;
@@ -148,6 +159,9 @@ function HeartPoppers() {
 }
 
 export default function FourthPage() {
+  // state to handle "secret" visible or not
+  const [pageVisible, setPageVisible] = useState(false);
+
   // Inject responsive CSS for mobile only (only once).
   useEffect(() => {
     if (!document.getElementById("fourthpage-responsive-style")) {
@@ -177,206 +191,261 @@ export default function FourthPage() {
         overflow: "hidden",
       }}
     >
-      <HeartPoppers />
-      {/* Semi-circle text above image */}
-      <div
-        className="fourthpage-semicircle-text"
-        style={{
-          position: "absolute",
-          top: "18%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "57vw",
-          height: "12vw",
-          pointerEvents: "none",
-          zIndex: 100,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-end",
-        }}
-      >
-        <svg
-          viewBox="0 0 500 180"
-          width="100%"
-          height="100%"
-          style={{ overflow: "visible" }}
+      {/* Secret trigger image and side text */}
+      {!pageVisible && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            position: "relative",
+            width: "fit-content",
+          }}
         >
-          <defs>
-            <path
-              id="semiCirclePath"
-              d="M 30,150 A 220,110 0 0 1 470,150"
-              fill="none"
-            />
-          </defs>
-          <text
-            fill="#ffb6d5"
-            fontSize="36"
-            fontFamily="'Staatliches', cursive, sans-serif"
-            fontWeight="bold"
-            letterSpacing="3"
+          <img
+            src="/secret.jpeg"
+            alt="secret"
+            className="secret-img-custom"
+            style={{
+              zIndex: 0,
+              top: "15vh",
+              left: "50vw",
+              width: "450px",
+              maxWidth: "90vw",
+              maxHeight: "60vh",
+              cursor: "pointer",
+              userSelect: "none",
+            }}
+            onClick={() => setPageVisible(true)}
+          />
+          <span
+            className="secret-img-text"
+            style={{
+              marginLeft: "18px",
+              fontSize: "2.1rem",
+              color: "#ff7ea3",
+              fontFamily: "'Staatliches', cursive, sans-serif",
+              fontWeight: "bold",
+              letterSpacing: "2px",
+              cursor: "pointer",
+              userSelect: "none",
+              transition: "color .2s",
+
+              position: "relative",
+              top: "60px",
+              whiteSpace: "nowrap",
+              overflowx: "hidden",
+            }}
+            onClick={() => setPageVisible(true)}
           >
-            <textPath
-              href="#semiCirclePath"
-              startOffset="50%"
-              textAnchor="middle"
+            Click Me Mine
+          </span>
+        </div>
+      )}
+      {/* The rest is only visible if pageVisible is true */}
+      {pageVisible && (
+        <>
+          <HeartPoppers />
+          {/* Semi-circle text above image */}
+          <div
+            className="fourthpage-semicircle-text"
+            style={{
+              position: "absolute",
+              top: "18%",
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: "57vw",
+              height: "12vw",
+              pointerEvents: "none",
+              zIndex: 100,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "flex-end",
+            }}
+          >
+            <svg
+              viewBox="0 0 500 180"
+              width="100%"
+              height="100%"
+              style={{ overflow: "visible" }}
             >
-              Flowers For You My Love 🫶🏻
-            </textPath>
-          </text>
-        </svg>
-      </div>
+              <defs>
+                <path
+                  id="semiCirclePath"
+                  d="M 30,150 A 220,110 0 0 1 470,150"
+                  fill="none"
+                />
+              </defs>
+              <text
+                fill="#ffb6d5"
+                fontSize="36"
+                fontFamily="'Staatliches', cursive, sans-serif"
+                fontWeight="bold"
+                letterSpacing="3"
+              >
+                <textPath
+                  href="#semiCirclePath"
+                  startOffset="50%"
+                  textAnchor="middle"
+                >
+                  Flowers For You My Love 🫶🏻
+                </textPath>
+              </text>
+            </svg>
+          </div>
 
-      {/* Left center text */}
-      <div
-        className="fourthpage-img-left"
-        style={{
-          position: "absolute",
-          left: "3vw",
-          top: "90%",
-          transform: "translateY(-50%)",
-          pointerEvents: "none",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 0,
-        }}
-      >
-        <img
-          src="/ialways.jpg"
-          alt="I Always Love You"
-          style={{
-            borderRadius: "1.5vw",
-            border: "2px solid #fff",
-            maxWidth: "220px",
-            maxHeight: "170px",
-            objectFit: "cover",
-            background: "#ffb6d5",
-          }}
-        />
-      </div>
-      <div
-        className="fourthpage-img-right"
-        style={{
-          position: "absolute",
-          right: "3vw",
-          top: "90%",
-          transform: "translateY(-50%)",
-          zIndex: 101,
-          pointerEvents: "none",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 0,
-        }}
-      >
-        <img
-          src="/tothe.png"
-          alt="To The"
-          style={{
-            maxWidth: "350px",
-            maxHeight: "280px",
-            objectFit: "contain",
-            background: "#ffb6d5",
-            display: "block",
-          }}
-        />
-      </div>
-      <div
-        className="fourthpage-img-centerbottom"
-        style={{
-          position: "absolute",
-          bottom: "4vh",
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 0,
-          pointerEvents: "none",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <img
-          src="/ap.jpg"
-          alt="Always"
-          style={{
-            border: "2px solid #fff",
-            maxWidth: "250px",
-            maxHeight: "190px",
-            objectFit: "cover",
-            background: "#ffb6d5",
-            display: "block",
-          }}
-        />
-      </div>
-      <div
-        className="fourthpage-youare"
-        style={{
-          position: "absolute",
-          top: "75%",
-          left: "30%",
-          transform: "translateX(-50%)",
-          zIndex: 0,
-          pointerEvents: "none",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <img
-          src="/youare.png"
-          alt="You Are"
-          style={{
-            maxWidth: "30vw",
-            maxHeight: "30vh",
-            display: "block",
-            zIndex: 0,
-            pointerEvents: "none",
-          }}
-        />
-      </div>
-      <div
-        className="fourthpage-forever"
-        style={{
-          position: "absolute",
-          top: "90%",
-          left: "77%",
-          transform: "translateX(-50%)",
-          zIndex: 0,
-          pointerEvents: "none",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <img
-          src="/forever.png"
-          alt="Forever"
-          style={{
-            position: "absolute",
-            right: "26%",
-            maxWidth: "30vw",
-            maxHeight: "30vh",
-            zIndex: 1,
-          }}
-        />
-      </div>
+          {/* Left center text */}
+          <div
+            className="fourthpage-img-left"
+            style={{
+              position: "absolute",
+              left: "3vw",
+              top: "90%",
+              transform: "translateY(-50%)",
+              pointerEvents: "none",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 0,
+            }}
+          >
+            <img
+              src="/ialways.jpg"
+              alt="I Always Love You"
+              style={{
+                borderRadius: "1.5vw",
+                border: "2px solid #fff",
+                maxWidth: "220px",
+                maxHeight: "170px",
+                objectFit: "cover",
+                background: "#ffb6d5",
+              }}
+            />
+          </div>
+          <div
+            className="fourthpage-img-right"
+            style={{
+              position: "absolute",
+              right: "3vw",
+              top: "90%",
+              transform: "translateY(-50%)",
+              zIndex: 101,
+              pointerEvents: "none",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 0,
+            }}
+          >
+            <img
+              src="/tothe.png"
+              alt="To The"
+              style={{
+                maxWidth: "350px",
+                maxHeight: "280px",
+                objectFit: "contain",
+                background: "#ffb6d5",
+                display: "block",
+              }}
+            />
+          </div>
+          <div
+            className="fourthpage-img-centerbottom"
+            style={{
+              position: "absolute",
+              bottom: "4vh",
+              left: "50%",
+              transform: "translateX(-50%)",
+              zIndex: 0,
+              pointerEvents: "none",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src="/ap.jpg"
+              alt="Always"
+              style={{
+                border: "2px solid #fff",
+                maxWidth: "250px",
+                maxHeight: "190px",
+                objectFit: "cover",
+                background: "#ffb6d5",
+                display: "block",
+              }}
+            />
+          </div>
+          <div
+            className="fourthpage-youare"
+            style={{
+              position: "absolute",
+              top: "75%",
+              left: "30%",
+              transform: "translateX(-50%)",
+              zIndex: 0,
+              pointerEvents: "none",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src="/youare.png"
+              alt="You Are"
+              style={{
+                maxWidth: "30vw",
+                maxHeight: "30vh",
+                display: "block",
+                zIndex: 0,
+                pointerEvents: "none",
+              }}
+            />
+          </div>
+          <div
+            className="fourthpage-forever"
+            style={{
+              position: "absolute",
+              top: "90%",
+              left: "77%",
+              transform: "translateX(-50%)",
+              zIndex: 0,
+              pointerEvents: "none",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src="/forever.png"
+              alt="Forever"
+              style={{
+                position: "absolute",
+                right: "26%",
+                maxWidth: "30vw",
+                maxHeight: "30vh",
+                zIndex: 1,
+              }}
+            />
+          </div>
 
-      <img
-        className="fourthpage-flower-main"
-        src="/flower.jpg"
-        alt="Flower"
-        style={{
-          maxWidth: "45vw",
-          maxHeight: "45vh",
-          display: "block",
-          zIndex: 1,
-        }}
-      />
+          <img
+            className="fourthpage-flower-main"
+            src="/flower.jpg"
+            alt="Flower"
+            style={{
+              maxWidth: "45vw",
+              maxHeight: "45vh",
+              display: "block",
+              zIndex: 1,
+            }}
+          />
 
-      {/* Add boo.jpeg to the right top middle corner, big */}
-      {/* Add me.png to the left bottom corner */}
-      {/* Add cute emoji.jpeg to the middle right side */}
-      {/* Add aa.png to the right corner */}
+          {/* Add boo.jpeg to the right top middle corner, big */}
+          {/* Add me.png to the left bottom corner */}
+          {/* Add cute emoji.jpeg to the middle right side */}
+          {/* Add aa.png to the right corner */}
+        </>
+      )}
     </div>
   );
 }

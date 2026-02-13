@@ -1,6 +1,5 @@
 export const metadata = {
   title: "Valentine Baby",
-  description: "Here for a cause",
 };
 
 export default function RootLayout({ children }) {

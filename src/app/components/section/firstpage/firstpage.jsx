@@ -167,7 +167,7 @@ const FirstPage = () => {
             fontFamily: "cursive",
           }}
         >
-          ~Hellosss
+          ~From: Vamsi Ram
         </span>
       </div>
       {/* Balloon animation and rendering */}
