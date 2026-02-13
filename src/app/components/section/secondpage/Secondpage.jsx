@@ -109,15 +109,6 @@ const SecondPage = () => {
     // eslint-disable-next-line
   }, [noButtonPos, yesClicked, shatter]);
 
-  // On click YES, go to FourthPage immediately
-  const handleYesClick = (e) => {
-    e?.preventDefault?.();
-    setYesClicked(true);
-    setTimeout(() => {
-      window.location.href = "/fourthpage";
-    }, 400);
-  };
-
   const handleNoMouseEnter = () => {
     if (hasMounted) setNoButtonPos(getRandomPosition());
   };
@@ -128,6 +119,13 @@ const SecondPage = () => {
     setTimeout(() => {
       setShowNo(false);
     }, 800);
+  };
+
+  // Yes button click handler (show "YAY! 💖 hehe🤭")
+  const handleYesClick = () => {
+    setYesClicked(true);
+    // If you want to navigate after a delay, uncomment below:
+    // setTimeout(() => { router.push("/FourthPage"); }, 1200);
   };
 
   const [shatterSeed, setShatterSeed] = useState(0);
@@ -272,7 +270,6 @@ const SecondPage = () => {
           >
             {/* Yes Button - Always on the right */}
             <button
-              onClick={handleYesClick}
               style={{
                 padding: "18px 38px",
                 fontSize: "1.2rem",
@@ -291,6 +288,7 @@ const SecondPage = () => {
                 minWidth: BUTTON_WIDTH,
                 minHeight: BUTTON_HEIGHT,
               }}
+              onClick={handleYesClick}
             >
               Yes
             </button>
