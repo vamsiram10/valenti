@@ -161,7 +161,7 @@ export default function NinePage() {
             color: "#ffe1f0",
             textShadow: "0 0 18px #ee78ef",
             display: "block",
-            marginTop: "1vw",
+            marginTop: "1.1vw",
             textAlign: "justify",
             maxWidth: "58vw",
           }}
