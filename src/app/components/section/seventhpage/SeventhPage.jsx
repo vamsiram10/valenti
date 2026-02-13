@@ -242,7 +242,7 @@ export default function SeventhPage() {
         ))}
         <img
           ref={vampRef}
-          src="/discmain.jpg"
+          src="/discmain.JPG"
           alt="Disc"
           style={{
             width: "30vw",
