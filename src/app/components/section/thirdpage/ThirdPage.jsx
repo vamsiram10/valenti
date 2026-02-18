@@ -426,7 +426,7 @@ const ThirdPage = () => {
                     maxHeight: "90vh",
                     background: "white",
                     borderRadius: "10px",
-                    boxShadow: "0 3px 16px rgba(0,0,0,0.4)",
+                    boxShadow: "0 2px 16px rgba(0,0,0,0.4)",
                     pointerEvents: "auto",
                   }}
                   onClick={(e) => e.stopPropagation()}
@@ -442,7 +442,7 @@ const ThirdPage = () => {
           className="thirdpage-vampicshow-img"
           style={{
             position: "absolute",
-            bottom: "20px",
+            bottom: "25px",
             right: 0,
             maxWidth: "90vw",
             maxHeight: "40vh",
