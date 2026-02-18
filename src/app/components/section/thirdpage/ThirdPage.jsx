@@ -442,10 +442,10 @@ const ThirdPage = () => {
           className="thirdpage-vampicshow-img"
           style={{
             position: "absolute",
-            bottom: "25px",
+            bottom: "20px",
             right: 0,
             maxWidth: "90vw",
-            maxHeight: "40vh",
+            maxHeight: "49vh",
             width: "auto",
             height: "auto",
             zIndex: 10000,
