@@ -422,11 +422,11 @@ const ThirdPage = () => {
                   src="/us.JPG"
                   alt="Popup"
                   style={{
-                    maxWidth: "97vw",
+                    maxWidth: "90vw",
                     maxHeight: "90vh",
                     background: "white",
                     borderRadius: "10px",
-                    boxShadow: "0 2px 16px rgba(0,0,0,0.4)",
+                    boxShadow: "0 3px 16px rgba(0,0,0,0.4)",
                     pointerEvents: "auto",
                   }}
                   onClick={(e) => e.stopPropagation()}
