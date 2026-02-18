@@ -422,7 +422,7 @@ const ThirdPage = () => {
                   src="/us.JPG"
                   alt="Popup"
                   style={{
-                    maxWidth: "98vw",
+                    maxWidth: "94vw",
                     maxHeight: "90vh",
                     background: "white",
                     borderRadius: "10px",
