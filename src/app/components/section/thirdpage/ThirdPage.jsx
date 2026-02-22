@@ -444,7 +444,7 @@ const ThirdPage = () => {
             position: "absolute",
             bottom: "20px",
             right: 0,
-            maxWidth: "94vw",
+            maxWidth: "95vw",
             maxHeight: "40vh",
             width: "auto",
             height: "auto",
